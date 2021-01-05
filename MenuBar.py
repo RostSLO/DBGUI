@@ -4,7 +4,6 @@ Created on January 4, 2021
 @author: Rost
 '''
 
-#from time import strftime 
 try:
     import tkinter as tk
     from tkinter.ttk import * 

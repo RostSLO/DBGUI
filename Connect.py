@@ -12,8 +12,9 @@ except ImportError:
     from Tkinter import *
 
 class Conn:
+    
     def __init__(self):
-
+        
         #Creating a not resizable window
         self.rootConn = Tk()
         self.rootConn.title("Connect to Redis DB")
@@ -62,13 +63,13 @@ class Conn:
         self.password_entry.grid(row=7, column=1, sticky=(N, E, S, W))
 
         #button to close the connection window
-        self.closeHelpButton = Button(self.rootConn, borderwidth=5, text = "Connect", command=self.endHelp)
+        self.closeHelpButton = Button(self.rootConn, borderwidth=5, text = "Connect", command=self.connect)
         self.closeHelpButton.grid(row=1, column=0, sticky=(N, S, E, W))
         
         self.rootConn.mainloop()
 
     #close Help window
-    def endHelp(self):
+    def connect(self):
         #establishing connection with redis
         if not self.hostname_entry.get(): redis_port = ""
         redis_host = self.hostname_entry.get()
@@ -77,14 +78,15 @@ class Conn:
         if not self.password_entry.get(): redis_password = ""
         else: redis_password = self.password_entry.get()
 
-        client = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
+        self.client = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
         
         try:
-            client.ping()
+            self.client.ping()
             self.rootConn.destroy()
         except (redis.exceptions.ConnectionError, 
             redis.exceptions.BusyLoadingError):
             messagebox.showerror("Connection Error", "Connection was not established. Please, review parameters and validate that Redis Server is up and running!")
 
-        
+    def getRedis(self):
+        return self.client    
         

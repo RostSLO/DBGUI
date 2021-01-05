@@ -8,16 +8,16 @@ Created on January 2, 2021
 import redis
 from MenuBar import MenuBar
 from Connect import Conn
+from RedisKeysTree import MyTreeVeiw 
 try:
     from tkinter import *
     from tkinter import messagebox
-#    from tkinter.ttk import * 
-#    from time import strftime 
 except ImportError:
     from Tkinter import *
 
 #establish connection with Redis DB
 conn=Conn()
+redisClient = conn.getRedis()
 
 #Creating a not resizable window
 root = Tk()
@@ -47,7 +47,11 @@ frameCLI.grid(row=1, column=1, sticky=(N, E, S, W))
 frameButtons = Frame(root, borderwidth=5, relief="ridge", bg='yellow', width=200, height=50)
 frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 
+#creating a menu
 menuMain = MenuBar(root)
+
+#creating a Treeview
+tree = MyTreeVeiw(frameDB, redisClient)
 
 #Frame Button Section
 #close Button
