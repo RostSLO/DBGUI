@@ -6,28 +6,35 @@ Created on January 2, 2021
 
 
 import redis
+from MenuBar import MenuBar
+from Connect import Conn
 try:
     from tkinter import *
     from tkinter import messagebox
+#    from tkinter.ttk import * 
+#    from time import strftime 
 except ImportError:
     from Tkinter import *
 
+#establish connection with Redis DB
+conn=Conn()
 
 #Creating a not resizable window
 root = Tk()
 root.title("SLORedis GUI")
-root.geometry("800x450+200+200")
+root.geometry("800x475+200+100")
 #root.resizable(False, False)
 # change title bar icon
 root.call('wm', 'iconphoto', root._w, "-default", PhotoImage(file='Pics\\logo.png'))
 
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=3)
-root.grid_rowconfigure(0, weight=5)
-root.grid_rowconfigure(1, weight=3)
-root.grid_rowconfigure(2, weight=1)
 
-#creating 4 frames: DBs, Set\Get, CLI, buttons
+root.grid_rowconfigure(0, weight=7)
+root.grid_rowconfigure(1, weight=11)
+root.grid_rowconfigure(2, weight=2)
+
+#creating 4 frames: Menu, DBs, Set\Get, CLI, buttons
 frameDB = Frame(root, borderwidth=5, relief="ridge", bg='blue', width=200, height=400)
 frameDB.grid(row=0, column=0, rowspan=2, sticky=(W, N, S, E))
 
@@ -40,11 +47,13 @@ frameCLI.grid(row=1, column=1, sticky=(N, E, S, W))
 frameButtons = Frame(root, borderwidth=5, relief="ridge", bg='yellow', width=200, height=50)
 frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 
+menuMain = MenuBar(root)
 
 #Frame Button Section
 #close Button
 closeButton = Button(frameButtons, borderwidth=5, text = "Close")
 closeButton.pack(side = RIGHT)
+
 
 
 '''
@@ -67,4 +76,6 @@ def closeWindow(event):
 #when you click close button
 closeButton.bind("<Button-1>", closeWindow)  
 
+# display Menu 
+root.config(menu = menuMain) 
 root.mainloop()
