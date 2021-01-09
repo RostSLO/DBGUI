@@ -6,9 +6,11 @@ Created on January 2, 2021
 
 
 import redis
+import rejson
 from MenuBar import MenuBar
 from Connect import Conn
 from RedisKeysTree import MyTreeVeiw 
+from RedisSetGet import RedisSetGet
 try:
     from tkinter import *
     from tkinter import messagebox
@@ -30,28 +32,34 @@ root.call('wm', 'iconphoto', root._w, "-default", PhotoImage(file='Pics\\logo.pn
 root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=3)
 
-root.grid_rowconfigure(0, weight=7)
-root.grid_rowconfigure(1, weight=11)
-root.grid_rowconfigure(2, weight=2)
+root.grid_rowconfigure(0, weight=5)
+root.grid_rowconfigure(1, weight=14)
+root.grid_rowconfigure(2, weight=1)
 
 #creating 4 frames: Menu, DBs, Set\Get, CLI, buttons
-frameDB = Frame(root, borderwidth=5, relief="ridge", bg='blue', width=200, height=400)
+frameDB = Frame(root, borderwidth=5, relief="ridge")
 frameDB.grid(row=0, column=0, rowspan=2, sticky=(W, N, S, E))
 
-frameSetGet = Frame(root, borderwidth=5, relief="ridge", bg='red', width=600, height=250)
+frameSetGet = Frame(root, borderwidth=5, relief="ridge")
 frameSetGet.grid(row=0, column=1, sticky=(N, E, S, W))
 
-frameCLI = Frame(root, borderwidth=5, relief="ridge", bg='green', width=600, height=150)
+frameCLI = Frame(root, borderwidth=5, relief="ridge")
 frameCLI.grid(row=1, column=1, sticky=(N, E, S, W))
 
-frameButtons = Frame(root, borderwidth=5, relief="ridge", bg='yellow', width=200, height=50)
+frameButtons = Frame(root, borderwidth=5, relief="ridge")
 frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 
 #creating a menu
 menuMain = MenuBar(root)
 
 #creating a Treeview
-tree = MyTreeVeiw(frameDB, redisClient)
+tree = MyTreeVeiw(frameDB)
+#fill the tree
+tree.drawTree(redisClient)
+
+#draw SetGet frame
+setGet = RedisSetGet(frameSetGet, redisClient)
+
 
 #Frame Button Section
 #close Button

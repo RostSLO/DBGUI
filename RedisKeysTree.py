@@ -12,7 +12,7 @@ except ImportError:
 
 class MyTreeVeiw(ttk.Treeview):
     
-    def __init__(self, frameDB, redisClient, *args, **kwargs):
+    def __init__(self, frameDB, *args, **kwargs):
            
         ttk.Treeview.__init__(self, frameDB, *args, **kwargs)
         
@@ -33,12 +33,9 @@ class MyTreeVeiw(ttk.Treeview):
         # Assigning the heading names to the respective columns 
         self.heading("1", text ="All keys") 
         
-        self.drawTree(redisClient)
-        
-        
     def drawTree(self, redisClient):
         # Level 1
-        db=self.insert("", 1, "", text="db0")
+        #db = self.insert("", 1, "", text="db0")
 
         # Level 2
         for key in redisClient.scan_iter("user:*"):
