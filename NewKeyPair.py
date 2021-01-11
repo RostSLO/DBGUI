@@ -11,9 +11,10 @@ except ImportError:
     from Tkinter import *
 
 class NewKeyPairWin:
-    def __init__(self, root, redisClient):
+    def __init__(self, root, redisClient, tree):
         
         self.redisClient = redisClient
+        self.tree = tree
 
         #Creating a not resizable window
         self.newKeyPairWin = Toplevel(root)
@@ -83,6 +84,7 @@ class NewKeyPairWin:
         if key and value: 
             self.redisClient.set(key, value)
             messagebox.showinfo("Success", "Key : Value pair was successfully saved", parent=self.newKeyPairWin)
+            self.tree.drawTree(self.redisClient)
             self.newKeyPairWin.destroy()
         else: 
             messagebox.showwarning("Warning", "Enter a valid Key : Value pair", parent=self.newKeyPairWin) 

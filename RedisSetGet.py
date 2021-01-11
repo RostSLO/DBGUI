@@ -3,9 +3,9 @@ Created on January 8, 2021
 
 @author: Rost
 '''
-import redis
-from redis.client import StrictRedis
-from ctypes.test import test_objects
+#import redis
+#from redis.client import StrictRedis
+#from ctypes.test import test_objects
 try:
     from tkinter import * 
     from tkinter import messagebox
@@ -14,41 +14,38 @@ except ImportError:
 
 class NewKeyValue():
     
-    def __init__(self, root, key, redisClient, enterKeyEntry):
+    def __init__(self, root, key, redisClient, enterKeyEntry, tree):
         
         self.key = key
         self.redisClient = redisClient
-        self.root = root
         self.rootKeyEntry = enterKeyEntry
+        self.tree = tree
         
         #Creating a not resizable window
         self.NewKeyValueWin = Toplevel(root)
         self.NewKeyValueWin.title("SLORedis GUI - new Key value")
         self.NewKeyValueWin.geometry("300x73+500+100")
         self.NewKeyValueWin.resizable(False, False)
-        # change title bar icon
-        #self.newKeyPairWin.call('wm', 'ic -onphoto', self.rootHelp._w, self.icon)
+   
+        #frame to contain information
+        self.frameNewKey = Frame(self.NewKeyValueWin, borderwidth=5, relief="ridge")
+        self.frameNewKey.grid(row=0, column=0, sticky=(N, S, E, W))
         
-     
-        #frame to provide information
-        self.frame = Frame(self.NewKeyValueWin, borderwidth=5, relief="ridge")
-        self.frame.grid(row=0, column=0, sticky=(N, S, E, W))
-        
-        self.frame.grid_rowconfigure(0, weight=1)
-        self.frame.grid_rowconfigure(1, weight=1)
+        self.frameNewKey.grid_rowconfigure(0, weight=1)
+        self.frameNewKey.grid_rowconfigure(1, weight=1)
 
-        self.frame.grid_columnconfigure(0, weight=4)
-        self.frame.grid_columnconfigure(1, weight=1)
+        self.frameNewKey.grid_columnconfigure(0, weight=4)
+        self.frameNewKey.grid_columnconfigure(1, weight=1)
 
         #create labels and entries for key
-        self.enterKeyLabel = Label(self.frame, text = "Key")
+        self.enterKeyLabel = Label(self.frameNewKey, text = "Key")
         self.enterKeyLabel.grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky=(W)) 
     
-        self.enterKeyEntry = Entry(self.frame,text = "", width=46)
+        self.enterKeyEntry = Entry(self.frameNewKey, text = "", width=46)
         self.enterKeyEntry.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky=(N, E, S, W)) 
 
         #button to modify Key value
-        self.okButton = Button(self.frame, borderwidth=5, text = "Ok", command=self.modifyValue)
+        self.okButton = Button(self.frameNewKey, borderwidth=5, text = "Ok", command=self.modifyValue)
         self.okButton.grid(row=1, column=1, sticky=(N, S, E, W))
 
         self.NewKeyValueWin.mainloop()
@@ -61,6 +58,7 @@ class NewKeyValue():
             messagebox.showinfo("Success", "Key was successfully renamed", parent=self.NewKeyValueWin)
             self.rootKeyEntry.delete(0, END)
             self.rootKeyEntry.insert(0, newKey)
+            self.tree.drawTree(self.redisClient)
             self.NewKeyValueWin.destroy()
     
 class RedisSetGet():
@@ -70,7 +68,7 @@ class RedisSetGet():
         self.frame = frameSetGet
         self._drawElements(frameSetGet, redisClient)
         self.tree = tree
-        
+
     #set key value pair
     def setKeyValue(self, event):
         key = self.enterKeyEntry.get()
@@ -88,8 +86,7 @@ class RedisSetGet():
             val = self.getValue(key, self.redisClient)
             if val:
                 #enter new key
-                NewKeyValue(self.frame, key, self.redisClient, self.enterKeyEntry)
-                self.tree.drawTree(self.redisClient)
+                NewKeyValue(self.frame, key, self.redisClient, self.enterKeyEntry, self.tree)
             else: messagebox.showwarning("Warning", "Enter a valid Key")             
         else: messagebox.showwarning("Warning", "Enter a valid Key")  
 
@@ -99,17 +96,21 @@ class RedisSetGet():
         if key: 
             val = self.getValue(key, self.redisClient)
             if val:
-                #delete key value pair
-                self.redisClient.delete(key)
-                messagebox.showinfo("Success", "Key : Value pair was successfully deleted")
-                self.tree.drawTree(self.redisClient)
+                answer = messagebox.askquestion("Delete key value pair", "Do you really want to delete Key : Value pair?", icon='question')
+                if answer == 'yes':
+                    #delete key value pair
+                    self.redisClient.delete(key)
+                    messagebox.showinfo("Success", "Key : Value pair was successfully deleted")
+                    self.enterKeyEntry.delete(0,END)
+                    self.enterValueText.delete("1.0",END)
+                    self.tree.drawTree(self.redisClient)
             else: messagebox.showwarning("Warning", "Enter a valid Key")             
         else: messagebox.showwarning("Warning", "Enter a valid Key")  
     
     
     #return value by key
     def getValue(self, key, redisClient):
-        if redisClient.get(key): return redisClient.get(key)
+        if self.redisClient.get(key): return self.redisClient.get(key)
         return ""
     
     #find value by key    
@@ -168,7 +169,6 @@ class RedisSetGet():
         self.deleteButton = Button(frame, borderwidth=5, text = "Delete")
         self.deleteButton.grid(row=6, column=2, sticky=(N, E, S, W))
         
-        
         #when you click find button
         self.findButton.bind("<ButtonRelease-1>", self.findValue)        
     
@@ -182,4 +182,5 @@ class RedisSetGet():
         self.modifyValueButton.bind("<ButtonRelease-1>", self.setKeyValue)
         
         #when you click delete button
-        self.deleteButton.bind("<ButtonRelease-1>", self.deleteKeyValue)          
+        self.deleteButton.bind("<ButtonRelease-1>", self.deleteKeyValue) 
+        

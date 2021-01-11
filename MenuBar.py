@@ -38,7 +38,6 @@ class MenuBar(tk.Menu):
         help_.add_command(label ='About SLORedis', command = None)
      
     def newKeyPair(self):
-        newKeyPair = NewKeyPairWin(self.root, self.redisClient)
-        self.tree.drawTree(self.redisClient)
+        newKeyPair = NewKeyPairWin(self.root, self.redisClient, self.tree)
 
         

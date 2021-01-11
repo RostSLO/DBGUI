@@ -40,7 +40,8 @@ class MyTreeVeiw():
         self.treeKeyItems.heading("1", text ="All keys") 
         
         self.drawTree(self.redisClient)
-        
+    
+    #draw treeview with DB as a parent and keys as an elements    
     def drawTree(self, redisClient):
         if len(self.treeKeyItems.get_children()) > 0:
             self.treeKeyItems.delete(*self.treeKeyItems.get_children())
@@ -53,6 +54,12 @@ class MyTreeVeiw():
         # Level 2        
         for key in redisClient.scan_iter():
             self.treeKeyItems.insert(parent=db, index="end", text="Key", value=[key]) 
+        self.open_children(self.treeKeyItems.focus())
+
+    def open_children(self, parent):
+        self.treeKeyItems.item(parent, open=True)  # open parent
+        for child in self.treeKeyItems.get_children(parent):
+            self.open_children(child)  
 
         '''
         # iterate a list in batches of size n
