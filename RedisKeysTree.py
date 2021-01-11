@@ -42,16 +42,17 @@ class MyTreeVeiw():
         self.drawTree(self.redisClient)
         
     def drawTree(self, redisClient):
-        
+        #clean up treeview before draw it
+        self.treeKeyItems.delete(*self.treeKeyItems.get_children())
+        #getting client list from redis
         clientList = redisClient.client_list()
         dbDict = clientList[0]
         dbName = 'db' + dbDict['db']
         # Level 1
         db = self.treeKeyItems.insert(parent='', index='end', text="DB", value=dbName)
-        # Level 2
+        # Level 2        
         for key in redisClient.scan_iter():
-            print(key)
-            self.treeKeyItems.insert(parent=db, index="end", text="Key", value=key) 
+            self.treeKeyItems.insert(parent=db, index="end", text="Key", value=[key]) 
 
         '''
         # iterate a list in batches of size n

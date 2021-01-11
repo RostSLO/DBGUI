@@ -50,17 +50,17 @@ frameButtons = Frame(root, borderwidth=5, relief="ridge")
 frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 
 #creating a menu
-menuMain = MenuBar(root)
+menuMain = MenuBar(root, redisClient)
 
-
+#show selected treeview item in key : value fields
 def  selectItem(event):
     #get selected element
     curItem = tree.treeKeyItems.focus()
     #get dictionary from the selscted element
     dictElement = tree.treeKeyItems.item(curItem)
     #get value of the element
-    [keyValue] = dictElement['values']
-    #if we selsct key show it in the key : value field
+    keyValue = ' '.join(str(x) for x in dictElement['values'])
+    #if we select key show it in the key : value field
     if tree.treeKeyItems.parent(curItem):
         #clean up and add clicked element to the key Entry
         setGet.enterKeyEntry.delete(0, END)
@@ -75,7 +75,7 @@ tree = MyTreeVeiw(frameDB, redisClient)
 tree.treeKeyItems.bind('<Double-1>', selectItem)
 
 #draw SetGet frame
-setGet = RedisSetGet(frameSetGet, redisClient)
+setGet = RedisSetGet(frameSetGet, redisClient, tree)
 
 
 #Frame Button Section
