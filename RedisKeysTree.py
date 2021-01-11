@@ -42,8 +42,8 @@ class MyTreeVeiw():
         self.drawTree(self.redisClient)
         
     def drawTree(self, redisClient):
-        #clean up treeview before draw it
-        self.treeKeyItems.delete(*self.treeKeyItems.get_children())
+        if len(self.treeKeyItems.get_children()) > 0:
+            self.treeKeyItems.delete(*self.treeKeyItems.get_children())
         #getting client list from redis
         clientList = redisClient.client_list()
         dbDict = clientList[0]

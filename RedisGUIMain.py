@@ -49,9 +49,6 @@ frameCLI.grid(row=1, column=1, sticky=(N, E, S, W))
 frameButtons = Frame(root, borderwidth=5, relief="ridge")
 frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 
-#creating a menu
-menuMain = MenuBar(root, redisClient)
-
 #show selected treeview item in key : value fields
 def  selectItem(event):
     #get selected element
@@ -77,6 +74,8 @@ tree.treeKeyItems.bind('<Double-1>', selectItem)
 #draw SetGet frame
 setGet = RedisSetGet(frameSetGet, redisClient, tree)
 
+#creating a menu
+menuMain = MenuBar(root, redisClient, tree)
 
 #Frame Button Section
 #close Button

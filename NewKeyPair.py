@@ -82,7 +82,7 @@ class NewKeyPairWin:
         value = self.enterValueText.get("1.0",END).rstrip()
         if key and value: 
             self.redisClient.set(key, value)
-            messagebox.showinfo("Success", "Key : Value pair was successfully saved")
+            messagebox.showinfo("Success", "Key : Value pair was successfully saved", parent=self.newKeyPairWin)
             self.newKeyPairWin.destroy()
         else: 
             messagebox.showwarning("Warning", "Enter a valid Key : Value pair", parent=self.newKeyPairWin) 

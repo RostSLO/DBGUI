@@ -13,10 +13,11 @@ except ImportError:
 
 class MenuBar(tk.Menu):
     
-    def __init__(self, root, redisClient, *args, **kwargs):
+    def __init__(self, root, redisClient, tree, *args, **kwargs):
         
         self.root = root 
         self.redisClient = redisClient
+        self.tree = tree
            
         tk.Menu.__init__(self, root, *args, **kwargs)
           
@@ -38,5 +39,6 @@ class MenuBar(tk.Menu):
      
     def newKeyPair(self):
         newKeyPair = NewKeyPairWin(self.root, self.redisClient)
+        self.tree.drawTree(self.redisClient)
 
         

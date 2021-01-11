@@ -58,7 +58,7 @@ class NewKeyValue():
         if newKey:
             #update the key
             self.redisClient.rename(self.key, newKey)
-            messagebox.showinfo("Success", "Key was successfully renamed")
+            messagebox.showinfo("Success", "Key was successfully renamed", parent=self.NewKeyValueWin)
             self.rootKeyEntry.delete(0, END)
             self.rootKeyEntry.insert(0, newKey)
             self.NewKeyValueWin.destroy()
@@ -92,6 +92,20 @@ class RedisSetGet():
                 self.tree.drawTree(self.redisClient)
             else: messagebox.showwarning("Warning", "Enter a valid Key")             
         else: messagebox.showwarning("Warning", "Enter a valid Key")  
+
+    #modify key value pair
+    def deleteKeyValue(self, event):
+        key = self.enterKeyEntry.get()
+        if key: 
+            val = self.getValue(key, self.redisClient)
+            if val:
+                #delete key value pair
+                self.redisClient.delete(key)
+                messagebox.showinfo("Success", "Key : Value pair was successfully deleted")
+                self.tree.drawTree(self.redisClient)
+            else: messagebox.showwarning("Warning", "Enter a valid Key")             
+        else: messagebox.showwarning("Warning", "Enter a valid Key")  
+    
     
     #return value by key
     def getValue(self, key, redisClient):
@@ -161,8 +175,11 @@ class RedisSetGet():
         #when you click save button
         self.saveButton.bind("<ButtonRelease-1>", self.setKeyValue) 
         
-        #when you modify Key button
+        #when you click modify Key button
         self.modifyKeyButton.bind("<ButtonRelease-1>", self.modifyKey)    
             
-        #when you modify Value button
-        self.modifyValueButton.bind("<ButtonRelease-1>", self.setKeyValue)       
+        #when you click modify Value button
+        self.modifyValueButton.bind("<ButtonRelease-1>", self.setKeyValue)
+        
+        #when you click delete button
+        self.deleteButton.bind("<ButtonRelease-1>", self.deleteKeyValue)          
