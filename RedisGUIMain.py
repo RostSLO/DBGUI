@@ -52,10 +52,27 @@ frameButtons.grid(row=2, column=0, columnspan=2, sticky=(N, E, W, S))
 #creating a menu
 menuMain = MenuBar(root)
 
+
+def  selectItem(event):
+    #get selected element
+    curItem = tree.treeKeyItems.focus()
+    #get dictionary from the selscted element
+    dictElement = tree.treeKeyItems.item(curItem)
+    #get value of the element
+    [keyValue] = dictElement['values']
+    #if we selsct key show it in the key : value field
+    if tree.treeKeyItems.parent(curItem):
+        #clean up and add clicked element to the key Entry
+        setGet.enterKeyEntry.delete(0, END)
+        setGet.enterKeyEntry.insert(0, keyValue)  
+        #enter value for the selected Key
+        setGet.findValue("<ButtonRelease-1>")
+
+
 #creating a Treeview
-tree = MyTreeVeiw(frameDB)
+tree = MyTreeVeiw(frameDB, redisClient)
 #fill the tree
-tree.drawTree(redisClient)
+tree.treeKeyItems.bind('<Double-1>', selectItem)
 
 #draw SetGet frame
 setGet = RedisSetGet(frameSetGet, redisClient)
