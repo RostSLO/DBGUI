@@ -3,9 +3,7 @@ Created on January 8, 2021
 
 @author: Rost
 '''
-#import redis
-#from redis.client import StrictRedis
-#from ctypes.test import test_objects
+
 try:
     from tkinter import * 
     from tkinter import messagebox
@@ -146,7 +144,7 @@ class RedisSetGet():
         self.enterKeyEntry.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky=(N, E, S, W)) 
         
         self.findButton = Button(frame, text="Find")
-        self.findButton.grid(row=1, column=2, padx=5, pady=5, sticky=(E))      
+        self.findButton.grid(row=1, column=2, padx=5, pady=5, sticky=(N, E, S, W))      
         
         self.enterValueLabel = Label(frame,text = "Value")
         self.enterValueLabel.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky=(W)) 

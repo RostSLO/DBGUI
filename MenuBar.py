@@ -5,6 +5,7 @@ Created on January 4, 2021
 '''
 
 from NewKeyPair import NewKeyPairWin
+from RedisGUIAbout import InfoWindow
 try:
     import tkinter as tk
     from tkinter.ttk import * 
@@ -25,18 +26,17 @@ class MenuBar(tk.Menu):
         keyValue = tk.Menu(self, tearoff = 0) 
         self.add_cascade(label ='Key / Value', menu = keyValue) 
         keyValue.add_command(label ='New pair', command = self.newKeyPair) 
-        keyValue.add_command(label ='Modify', command = None) 
-        keyValue.add_command(label ='Delete', command = None) 
         keyValue.add_separator() 
         keyValue.add_command(label ='Exit', command = root.destroy) 
           
         # Adding Help Menu 
         help_ = tk.Menu(self, tearoff = 0) 
         self.add_cascade(label ='Help', menu = help_) 
-        help_.add_command(label ='SLORedis Help', command = None) 
-        help_.add_separator() 
-        help_.add_command(label ='About SLORedis', command = None)
+        help_.add_command(label ='About SLORedis', command = self.callInfoWin)
      
+    def callInfoWin(self):
+        app = InfoWindow(self.root)  
+    
     def newKeyPair(self):
         newKeyPair = NewKeyPairWin(self.root, self.redisClient, self.tree)
 

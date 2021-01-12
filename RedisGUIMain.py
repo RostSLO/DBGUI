@@ -11,6 +11,7 @@ from MenuBar import MenuBar
 from Connect import Conn
 from RedisKeysTree import MyTreeVeiw 
 from RedisSetGet import RedisSetGet
+from RedisCLI import RedisCLI
 try:
     from tkinter import *
     from tkinter import messagebox
@@ -25,7 +26,7 @@ try:
     #Creating a not resizable window
     root = Tk()
     root.title("SLORedis GUI")
-    root.geometry("800x475+200+100")
+    root.geometry("800x600+200+100")
     #root.resizable(False, False)
     # change title bar icon
     root.call('wm', 'iconphoto', root._w, "-default", PhotoImage(file='Pics\\logo.png'))
@@ -34,7 +35,7 @@ try:
     root.grid_columnconfigure(1, weight=3)
     
     root.grid_rowconfigure(0, weight=5)
-    root.grid_rowconfigure(1, weight=14)
+    root.grid_rowconfigure(1, weight=12)
     root.grid_rowconfigure(2, weight=1)
     
     #creating 4 frames: Menu, DBs, Set\Get, CLI, buttons
@@ -77,6 +78,9 @@ try:
     
     #creating a menu
     menuMain = MenuBar(root, redisClient, tree)
+    
+    #creating CLI window
+    redisCLI = RedisCLI(frameCLI, redisClient, tree)
     
     #Frame Button Section
     #close Button
