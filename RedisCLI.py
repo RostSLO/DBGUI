@@ -15,11 +15,13 @@ except ImportError:
     
 class RedisCLI():
     
-    def __init__(self, frame, redisClient, tree):
+    def __init__(self, frame, redisClient, tree, host, port):
         
         self.frame = frame
         self.redisClient = redisClient
         self.tree = tree 
+        self.host = host
+        self.port = port
         
         self.frame.grid_rowconfigure(0, weight=1)
         self.frame.grid_columnconfigure(0, weight=1)
@@ -31,5 +33,5 @@ class RedisCLI():
         self.verscrlbar=Scrollbar(frame, orient=VERTICAL, command=self.enterCLIText.yview)
         self.verscrlbar.grid(row=0, column=1, sticky=N+S+E+W)
         
-        self.enterCLIText.insert(END, ">>")
+        self.enterCLIText.insert(END, self.host + ":" + str(self.port) + ">>")
         

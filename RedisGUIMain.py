@@ -18,10 +18,16 @@ try:
 except ImportError:
     from Tkinter import *
 
+host = ""
+port = 0
+
 #establish connection with Redis DB
 conn=Conn()
 try:
     redisClient = conn.getRedis()
+    
+    host = conn.redis_host
+    port = conn.redis_port
         
     #Creating a not resizable window
     root = Tk()
@@ -61,6 +67,11 @@ try:
         keyValue = ' '.join(str(x) for x in dictElement['values'])
         #if we select key show it in the key : value field
         if tree.treeKeyItems.parent(curItem):
+            #getting client list from redis
+            #clientList = redisClient.client_list()
+            #dbDict = clientList[0]
+            #dbName = dbDict['db']
+            #redisClient.
             #clean up and add clicked element to the key Entry
             setGet.enterKeyEntry.delete(0, END)
             setGet.enterKeyEntry.insert(0, keyValue)  
@@ -80,7 +91,7 @@ try:
     menuMain = MenuBar(root, redisClient, tree)
     
     #creating CLI window
-    redisCLI = RedisCLI(frameCLI, redisClient, tree)
+    redisCLI = RedisCLI(frameCLI, redisClient, tree, host, port)
     
     #Frame Button Section
     #close Button

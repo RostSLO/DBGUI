@@ -15,6 +15,10 @@ class Conn:
     
     def __init__(self):
         
+        self.redis_host = ""
+        self.redis_port = 0
+        self.redis_password = ""
+        
         #Creating a not resizable window
         self.rootConn = Tk()
         self.rootConn.title("Connect to Redis DB")
@@ -75,14 +79,14 @@ class Conn:
     #close Help window
     def connect(self):
         #establishing connection with redis
-        if not self.hostnameEntry.get(): redis_port = ""
-        else: redis_host = self.hostnameEntry.get()
-        if not self.hostportEntry.get(): redis_port = 0
-        else: redis_port = (int(self.hostportEntry.get()))
-        if not self.passwordEntry.get(): redis_password = ""
-        else: redis_password = self.passwordEntry.get()
+        if not self.hostnameEntry.get(): self.redis_port = ""
+        else: self.redis_host = self.hostnameEntry.get()
+        if not self.hostportEntry.get(): self.redis_port = 0
+        else: self.redis_port = (int(self.hostportEntry.get()))
+        if not self.passwordEntry.get(): self.redis_password = ""
+        else: self.redis_password = self.passwordEntry.get()
 
-        self.client = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
+        self.client = redis.StrictRedis(host=self.redis_host, port=self.redis_port, password=self.redis_password, decode_responses=True)
         
         try:
             self.client.ping()

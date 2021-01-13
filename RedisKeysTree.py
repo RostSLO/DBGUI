@@ -54,6 +54,7 @@ class MyTreeVeiw():
         # Level 2        
         for key in redisClient.scan_iter():
             self.treeKeyItems.insert(parent=db, index="end", text="Key", value=[key]) 
+        #open treeview children
         self.open_children(self.treeKeyItems.focus())
 
     def open_children(self, parent):
