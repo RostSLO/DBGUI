@@ -129,9 +129,7 @@ class RedisSetGet():
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_rowconfigure(1, weight=1)
         frame.grid_rowconfigure(2, weight=1)
-        frame.grid_rowconfigure(3, weight=4)
-        frame.grid_rowconfigure(4, weight=1)
-        frame.grid_rowconfigure(5, weight=1)        
+        frame.grid_rowconfigure((3, 4, 5, 6), weight=1)    
 
         
         frame.grid_columnconfigure(0, weight=1)
@@ -140,16 +138,16 @@ class RedisSetGet():
         self.enterKeyLabel = Label(frame, text = "Key")
         self.enterKeyLabel.grid(row=0, column=0, columnspan=3, padx=5, pady=5, sticky=(W)) 
     
-        self.enterKeyEntry = Entry(frame,text = "")
+        self.enterKeyEntry = Entry(frame, text = "")
         self.enterKeyEntry.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky=(N, E, S, W)) 
         
         self.findButton = Button(frame, text="Find")
         self.findButton.grid(row=1, column=2, padx=5, pady=5, sticky=(N, E, S, W))      
         
-        self.enterValueLabel = Label(frame,text = "Value")
+        self.enterValueLabel = Label(frame, text = "Value")
         self.enterValueLabel.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky=(W)) 
         
-        self.enterValueText = Text(frame, height=7, width=60)
+        self.enterValueText = Text(frame, heigh=10)
         self.enterValueText.grid(row=3, column=0, rowspan=4, padx=5, pady=5, sticky=(N, E, S, W))
         
         self.verscrlbar=Scrollbar(frame, orient=VERTICAL, command=self.enterValueText.yview)

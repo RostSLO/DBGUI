@@ -15,6 +15,7 @@ class MyTreeVeiw():
     def __init__(self, frameDB, redisClient):
         
         self.redisClient = redisClient
+        self.dbList = []
         
         frameDB.grid_rowconfigure(0, weight=1)
         frameDB.grid_columnconfigure(0, weight=1)
@@ -45,17 +46,29 @@ class MyTreeVeiw():
     def drawTree(self, redisClient):
         if len(self.treeKeyItems.get_children()) > 0:
             self.treeKeyItems.delete(*self.treeKeyItems.get_children())
-        #getting client list from redis
-        clientList = redisClient.client_list()
-        dbDict = clientList[0]
-        dbName = 'db' + dbDict['db']
-        # Level 1
-        db = self.treeKeyItems.insert(parent='', index='end', text="DB", value=dbName)
-        # Level 2        
-        for key in redisClient.scan_iter():
-            self.treeKeyItems.insert(parent=db, index="end", text="Key", value=[key]) 
+        #getting list of all dbs containing keys
+        listOfDBs = redisClient.execute_command('info keyspace').split("\n")
+        if listOfDBs:
+            self.dbList.clear()
+        #creating the list of db IDs for dbs containig keys
+        for i in listOfDBs:
+            if "db" in i:
+                db = i.split(":", 1)[0][2:]
+                self.dbList.append(db)
+        for dbID in self.dbList:
+            redisClient.execute_command('select ' + str(dbID))   
+            #getting client list from redis
+            clientList = redisClient.client_list()
+            dbDict = clientList[1]
+            dbName = '>>db' + dbDict['db']
+            # Level 1
+            dbLevel1 = self.treeKeyItems.insert(parent='', index='end', text=dbID, value=dbName)
+            # Level 2        
+            for key in redisClient.scan_iter():
+                self.treeKeyItems.insert(parent=dbLevel1, index="end", text=dbID, value=[key]) 
         #open treeview children
         self.open_children(self.treeKeyItems.focus())
+        redisClient.execute_command('select ' + str(self.dbList[0]))   
 
     def open_children(self, parent):
         self.treeKeyItems.item(parent, open=True)  # open parent
