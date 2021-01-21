@@ -31,7 +31,7 @@ class RedisCLI():
        
         self.enterCLIText = Text(self.frame, heigh=10, bg="black", fg="#00FF00", font=("Cascadia Code", 11, "bold"))
         self.enterCLIText.grid(row=0, column=0, padx=5, pady=5, sticky=(N, E, S, W))
-        
+        self.enterCLIText.config(insertwidth = 2, insertbackground="#00FF00", highlightthickness=0)
         
         self.verscrlbar=Scrollbar(frame, orient=VERTICAL, command=self.enterCLIText.yview)
         self.verscrlbar.grid(row=0, column=1, sticky=N+S+E+W)
@@ -59,7 +59,7 @@ class RedisCLI():
 
         
     def runCommand(self, event): 
-        #print("i am in")
+        #review is Enter pressed or released
         if self.keyPressed:
             self.hostPort = self.host + ":" + str(self.port) + ">> "
             self.enterCLIText.see(END)
