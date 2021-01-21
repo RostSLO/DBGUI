@@ -48,7 +48,7 @@ class Conn:
         self.hostnameEntry = Entry(self.frameHelpInfo, width=33)
         self.hostnameEntry.grid(row=3, column=1, sticky=(N, E, S, W))
         #for testing purposes
-        self.hostnameEntry.insert(0, "localhost")
+        #self.hostnameEntry.insert(0, "localhost")
         
         self.title = Label(self.frameHelpInfo,text = "")
         self.title.grid(row=4, column=0, columnspan=2, sticky=(N, E, S, W))
@@ -59,7 +59,7 @@ class Conn:
         self.hostportEntry = Entry(self.frameHelpInfo)
         self.hostportEntry.grid(row=5, column=1, sticky=(N, E, S, W))
         #for testing purposes
-        self.hostportEntry.insert(0, "6379")
+        #self.hostportEntry.insert(0, "6379")
         
         self.title = Label(self.frameHelpInfo,text = "")
         self.title.grid(row=6, column=0, columnspan=2, sticky=(N, E, S, W))

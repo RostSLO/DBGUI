@@ -59,7 +59,7 @@ class MyTreeVeiw():
             redisClient.execute_command('select ' + str(dbID))   
             #getting client list from redis
             clientList = redisClient.client_list()
-            dbDict = clientList[1]
+            dbDict = clientList[0]
             dbName = '>>db' + dbDict['db']
             # Level 1
             dbLevel1 = self.treeKeyItems.insert(parent='', index='end', text=dbID, value=dbName)
